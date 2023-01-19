@@ -39,8 +39,8 @@ const User = require("./models/user.js");
 const mongoose = require("mongoose");
 
 app.use(express.static("public"));
-const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer); */
+const httpServer = new HttpServer(app);
 
 /* const cookieParser = require("cookie-parser");
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -54,7 +54,7 @@ const numCpu = require("os").cpus().length;
 /* passport.use("register", new Strategy({ passReqToCallback: true }, register));
 passport.use("login", new Strategy({ passReqToCallback: true }, login));
  */
-/* const hbs = create({
+const hbs = create({
   helpers: {
     arrayVacio(productos) {
       if (productos.length) return false;
@@ -66,7 +66,7 @@ passport.use("login", new Strategy({ passReqToCallback: true }, login));
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 app.set("views", "./views");
- */
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
