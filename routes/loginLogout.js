@@ -8,7 +8,7 @@ router.get("/", (req, res, next) => {
     `Se accedio a la ruta ${req.originalUrl} por el metodo ${req.method} `
   );
 
-  res("holaaa");
+  res.redirect("/login");
 });
 router.get("/login", (req, res, next) => {
   logger.info(
