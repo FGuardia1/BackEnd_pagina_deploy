@@ -1,0 +1,57 @@
+<div>
+
+  <div class="container mt-3">
+    <h1 class="alert alert-success">
+      Bienvenido,
+      {{nombre}}
+      <button
+        class="btn btn-warning float-right mt-2"
+        onclick="location.href='/logout'"
+      >
+        Desloguear
+      </button>
+    </h1>
+  </div>
+
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Foto</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      {{#each productos}}
+        <tr>
+          <td>{{this.title}}</td>
+          <td>${{this.price}}</td>
+          <td><img
+              src="{{this.thumbnail}}"
+              alt="..."
+              class="img-responsive img-thumbnail"
+            /></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<h1>Centro de mensajes</h1>
+<h2 id="compresionChat"></h2>
+<form
+  onsubmit="return addMessage(this)"
+  class="d-flex flex-column align-items-start"
+>
+  <input type="text" id="userEmail" placeholder="Email..." required />
+  <input type="text" id="userNombre" placeholder="Nombre..." />
+  <input type="text" id="userApellido" placeholder="Apellido..." />
+  <input type="text" id="userEdad" placeholder="Edad..." />
+  <input type="text" id="userAlias" placeholder="Alias..." />
+  <input type="text" id="userAvatar" placeholder="Avatar..." />
+  <input type="text" id="text" placeholder="Cuéntamos algo..." />
+
+  <input type="submit" value="Enviar" />
+</form>
+
+<div id="messages"></div>
