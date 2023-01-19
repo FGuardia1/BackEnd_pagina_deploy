@@ -7,8 +7,12 @@ const options = {
   default: { puerto: 8080, modo: "fork" },
 };
 const argumentos = parseArgs(process.argv.slice(2), options);
-const MONGO_ATLAS_URL = env.MONGO_ATLAS_URL;
-const MONGO_ATLAS_USERS = env.MONGO_ATLAS_USERS;
+/* const MONGO_ATLAS_URL = env.MONGO_ATLAS_URL;
+const MONGO_ATLAS_USERS = env.MONGO_ATLAS_USERS; */
+const MONGO_ATLAS_URL =
+  "mongodb+srv://fer:contra123@cluster0.emeikir.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_ATLAS_USERS =
+  "mongodb+srv://fer:contra123@cluster0.emeikir.mongodb.net/?retryWrites=true&w=majority&dbName=ecommerceBackend";
 const PORT = argumentos.puerto;
 const MODO = argumentos.modo;
 const express = require("express");
