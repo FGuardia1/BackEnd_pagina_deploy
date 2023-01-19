@@ -8,7 +8,7 @@ const options = {
 };
 const argumentos = parseArgs(process.argv.slice(2), options);
 const MONGO_ATLAS_URL = env.MONGO_ATLAS_URL;
-
+const MONGO_ATLAS_USERS = env.MONGO_ATLAS_USERS;
 const PORT = argumentos.puerto;
 const MODO = argumentos.modo;
 const express = require("express");
@@ -17,8 +17,7 @@ const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
 
 const { productDAO, chatDAO } = require("./daos");
-const credential = require("./utils/credentials.js");
-const util = require("util");
+
 const routerProductos = require("./routes/productos.js");
 const routerLogInOut = require("./routes/loginLogout.js");
 const routerInfo = require("./routes/info.js");
@@ -30,6 +29,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const User = require("./models/user.js");
+const mongoose = require("mongoose");
 
 app.use(express.static("public"));
 const httpServer = new HttpServer(app);
@@ -67,8 +67,7 @@ app.use(cookieParser());
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://fer:contra123@cluster0.emeikir.mongodb.net/?retryWrites=true&w=majority",
+      mongoUrl: MONGO_ATLAS_URL,
       mongoOptions: advancedOptions,
     }),
     secret: "shhhhhhhhhhhhhhhhhhhhh",
@@ -143,10 +142,28 @@ if (MODO == "cluster") {
   } else {
     httpServer.listen(PORT, async () => {
       console.log(`Server running on PORT ${PORT}, en modo ${MODO}`);
+      try {
+        await mongoose.connect(MONGO_ATLAS_USERS, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+        console.log("DB mongo conectada");
+      } catch (error) {
+        console.log(`Error en conexión de Base de datos: ${error}`);
+      }
     });
   }
 } else {
   httpServer.listen(PORT, async () => {
     console.log(`Server running on PORT ${PORT}, en modo ${MODO}`);
+    try {
+      await mongoose.connect(MONGO_ATLAS_USERS, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      console.log("DB mongo conectada");
+    } catch (error) {
+      console.log(`Error en conexión de Base de datos: ${error}`);
+    }
   });
 }
