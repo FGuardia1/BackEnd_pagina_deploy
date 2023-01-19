@@ -5,7 +5,7 @@ const router = Router();
 const Authenticated = require("../middlewars/middlewars.js");
 const compression = require("compression");
 const logger = require("../utils/logger.js");
-router.get("/info", compression(), (req, res, next) => {
+router.get("/", compression(), (req, res, next) => {
   /*   console.log({
     argumentos: process.argv,
     nombrePlataforma: process.platform,
