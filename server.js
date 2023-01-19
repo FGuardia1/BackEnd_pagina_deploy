@@ -30,7 +30,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const User = require("./models/user.js");
-const mongoose = require("mongoose");
 
 app.use(express.static("public"));
 const httpServer = new HttpServer(app);
@@ -68,7 +67,8 @@ app.use(cookieParser());
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl: MONGO_ATLAS_URL,
+      mongoUrl:
+        "mongodb+srv://fer:contra123@cluster0.emeikir.mongodb.net/?retryWrites=true&w=majority",
       mongoOptions: advancedOptions,
     }),
     secret: "shhhhhhhhhhhhhhhhhhhhh",
