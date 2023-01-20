@@ -3,34 +3,34 @@ const { Router } = express;
 const router = Router();
 const passport = require("passport");
 const logger = require("../utils/logger.js");
-/* router.get("/", (req, res, next) => {
+router.get("/", (req, res, next) => {
   logger.info(
     `Se accedio a la ruta ${req.originalUrl} por el metodo ${req.method} `
-  ); 
+  );
 
   res.redirect("/login");
-});*/
+});
 router.get("/login", (req, res, next) => {
   logger.info(
     `Se accedio a la ruta ${req.originalUrl} por el metodo ${req.method} `
   );
-  res.render("view/login");
+  res.render("login");
 });
 router.get("/register", (req, res, next) => {
   logger.info(
     `Se accedio a la ruta ${req.originalUrl} por el metodo ${req.method} `
   );
-  res.render("view/register");
+  res.render("register");
 });
 
 router.get("/failregister", (req, res) => {
-  res.render("view/register-error", {});
+  res.render("register-error", {});
 });
 router.get("/faillogin", (req, res) => {
   logger.info(
     `Se accedio a la ruta ${req.originalUrl} por el metodo ${req.method} `
   );
-  res.render("view/login-error", {});
+  res.render("login-error", {});
 });
 
 router.get("/logout", (req, res) => {
@@ -40,7 +40,7 @@ router.get("/logout", (req, res) => {
   const username = req.user.username;
   req.logout(req.user, (err) => {
     if (err) return next(err);
-    res.render("view/logout", { username });
+    res.render("logout", { username });
   });
 });
 

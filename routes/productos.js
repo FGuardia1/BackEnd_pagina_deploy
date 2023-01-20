@@ -8,7 +8,7 @@ router.get("/home", Authenticated, (req, res, next) => {
     `Se accedio a la ruta ${req.originalUrl} por el metodo ${req.method} `
   );
   req.session.resetMaxAge;
-  res.render("view/form_table_chat", { nombre: req.user.username });
+  res.render("form_table_chat", { nombre: req.user.username });
 });
 
 module.exports = router;

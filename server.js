@@ -2,21 +2,16 @@ const logger = require("./utils/logger.js");
 
 require("dotenv").config();
 const env = process.env;
-/* const parseArgs = require("minimist");
+const parseArgs = require("minimist");
 const options = {
   default: { puerto: 8080, modo: "fork" },
 };
-const argumentos = parseArgs(process.argv.slice(2), options); */
-/* const MONGO_ATLAS_URL = env.MONGO_ATLAS_URL;
-const MONGO_ATLAS_USERS = env.MONGO_ATLAS_USERS; */
-const MONGO_ATLAS_URL =
-  "mongodb+srv://fer:contra123@cluster0.emeikir.mongodb.net/?retryWrites=true&w=majority";
-const MONGO_ATLAS_USERS =
-  "mongodb+srv://fer:contra123@cluster0.emeikir.mongodb.net/?retryWrites=true&w=majority&dbName=ecommerceBackend";
-/* const PORT = argumentos.puerto;
-const MODO = argumentos.modo; */
-const PORT = 8080;
-const MODO = "fork";
+const argumentos = parseArgs(process.argv.slice(2), options);
+const MONGO_ATLAS_URL = env.MONGO_ATLAS_URL;
+const MONGO_ATLAS_USERS = env.MONGO_ATLAS_USERS;
+
+const PORT = argumentos.puerto;
+const MODO = argumentos.modo;
 
 const express = require("express");
 const { create } = require("express-handlebars");
@@ -25,37 +20,36 @@ const { Server: IOServer } = require("socket.io");
 
 const { productDAO, chatDAO } = require("./daos");
 
-//const routerProductos = require("./routes/productos.js");
-//const routerLogInOut = require("./routes/loginLogout.js");
+const routerProductos = require("./routes/productos.js");
+const routerLogInOut = require("./routes/loginLogout.js");
 const routerInfo = require("./routes/info.js");
-//const routerRandom = require("./routes/random.js");
-//const { normalizar, chatSchema } = require("./utils/normalizar.utils");
+const routerRandom = require("./routes/random.js");
+const { normalizar, chatSchema } = require("./utils/normalizar.utils");
 const app = express();
 
-//const session = require("express-session");
-/* const MongoStore = require("connect-mongo");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 const User = require("./models/user.js");
 const mongoose = require("mongoose");
-
-app.use(express.static("public"));
-const io = new IOServer(httpServer); */
 const httpServer = new HttpServer(app);
+app.use(express.static("public"));
+const io = new IOServer(httpServer);
 
-/* const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const passport = require("passport");
 const Strategy = require("passport-local");
 const { login, register } = require("./passport/strategy.js");
- */
+
 const cluster = require("cluster");
 const numCpu = require("os").cpus().length;
 
-/* passport.use("register", new Strategy({ passReqToCallback: true }, register));
+passport.use("register", new Strategy({ passReqToCallback: true }, register));
 passport.use("login", new Strategy({ passReqToCallback: true }, login));
- */
+
 const path = require("path");
-/*
+
 const hbs = create({
   helpers: {
     arrayVacio(productos) {
@@ -65,15 +59,26 @@ const hbs = create({
   },
 });
 app.use(express.static(path.join(__dirname, "public")));
+const exphbs = require("express-handlebars");
 
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
-app.set("views", path.join(__dirname, "/views"));*/
+app.set("views", path.join(__dirname, "/views/view"));
+
+app.engine(
+  "handlebars",
+  exphbs.engine({
+    defaultLayout: "main",
+    layoutsDir: path.join(__dirname, "views", "layouts"),
+    partialsDir: path.join(__dirname, "views", "partials"),
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* app.use(cookieParser());
+app.use(cookieParser());
 app.use(
   session({
     store: MongoStore.create({
@@ -88,9 +93,9 @@ app.use(
       maxAge: 60000,
     },
   })
-); */
+);
 
-/* app.use(passport.initialize());
+app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
@@ -102,11 +107,11 @@ passport.deserializeUser((id, done) => {
     done(err, user);
   });
 });
- 
+
 app.use("/", routerProductos);
-app.use("/", routerLogInOut);*/
+app.use("/", routerLogInOut);
 app.use("/", routerInfo);
-/* app.use("/api", routerRandom);
+app.use("/api", routerRandom);
 
 io.on("connection", async (socket) => {
   console.log("Un cliente se ha conectado");
@@ -142,7 +147,7 @@ io.on("connection", async (socket) => {
 
     io.sockets.emit("product-push", data);
   });
-}); */
+});
 
 if (MODO == "cluster") {
   if (cluster.isMaster) {
@@ -152,7 +157,7 @@ if (MODO == "cluster") {
   } else {
     httpServer.listen(PORT, async () => {
       console.log(`Server running on PORT ${PORT}, en modo ${MODO}`);
-      /*   try {
+      try {
         await mongoose.connect(MONGO_ATLAS_USERS, {
           useNewUrlParser: true,
           useUnifiedTopology: true,
@@ -160,13 +165,13 @@ if (MODO == "cluster") {
         console.log("DB mongo conectada");
       } catch (error) {
         console.log(`Error en conexión de Base de datos: ${error}`);
-      } */
+      }
     });
   }
 } else {
   httpServer.listen(PORT, async () => {
     console.log(`Server running on PORT ${PORT}, en modo ${MODO}`);
-    /*  try {
+    try {
       await mongoose.connect(MONGO_ATLAS_USERS, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -174,6 +179,6 @@ if (MODO == "cluster") {
       console.log("DB mongo conectada");
     } catch (error) {
       console.log(`Error en conexión de Base de datos: ${error}`);
-    } */
+    }
   });
 }
